@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import InputKriteria from './components/InputKriteria';
-import InputAlternatif from './components/InputAlternatif';
-import PilihMetode from './components/PilihMetode';
-import TabelHasil from './components/TabelHasil';
-import { DSSAlgorithms } from './utils/dssAlgorithms';
+"use client";
+
+import React, { useState } from "react";
+import InputKriteria from "./components/InputKriteria";
+import InputAlternatif from "./components/InputAlternatif";
+import PilihMetode from "./components/PilihMetode";
+import TabelHasil from "./components/TabelHasil";
 
 interface Criterion {
   id: number;
   name: string;
   weight: number;
-  type: 'benefit' | 'cost';
+  type: "benefit" | "cost";
 }
 
 interface Alternative {
@@ -26,76 +27,85 @@ interface Result {
 
 export default function HomePage() {
   const [criteria, setCriteria] = useState<Criterion[]>([
-    { id: 1, name: 'Harga', weight: 0.3, type: 'cost' }
+    { id: 1, name: "Harga", weight: 0.3, type: "cost" },
   ]);
+
   const [alternatives, setAlternatives] = useState<Alternative[]>([
-    { id: 1, name: 'Alternatif 1', values: { 1: 0 } }
+    { id: 1, name: "Alternatif 1", values: { 1: 0 } },
   ]);
-  const [selectedMethod, setSelectedMethod] = useState<string>('SAW');
+
+  const [selectedMethod, setSelectedMethod] = useState<string>("SAW");
   const [results, setResults] = useState<Result[] | null>(null);
 
-  const handleCalculate = () => {
-    const totalWeight = criteria.reduce((sum: number, c: Criterion) => sum + c.weight, 0);
+  const handleCalculate = async () => {
+    // Validasi bobot kriteria
+    const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
     if (Math.abs(totalWeight - 1) > 0.01) {
-      alert('Total bobot kriteria harus sama dengan 1.0!');
+      alert("Total bobot kriteria harus sama dengan 1.0!");
       return;
     }
 
-    let result: Result[];
-    switch (selectedMethod) {
-      case 'SAW':
-        result = DSSAlgorithms.calculateSAW(alternatives, criteria);
-        break;
-      case 'WP':
-        result = DSSAlgorithms.calculateWP(alternatives, criteria);
-        break;
-      case 'AHP':
-        result = DSSAlgorithms.calculateAHP(alternatives, criteria);
-        break;
-      case 'TOPSIS':
-        result = DSSAlgorithms.calculateTOPSIS(alternatives, criteria);
-        break;
-      default:
-        result = [];
-    }
+    try {
+      const res = await fetch("/api/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          method: selectedMethod,
+          criteria,
+          alternatives,
+        }),
+      });
 
-    setResults(result);
+      const data = await res.json();
+      if (data.error) {
+        alert(data.error);
+      } else {
+        setResults(data.result);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi error saat menghitung");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
           <h1 className="text-4xl font-bold text-indigo-900 mb-2">
             Decision Support System
           </h1>
-          <p className="text-gray-600 mb-4">Multi-Attribute Decision Making (MADM)</p>
+          <p className="text-gray-600 mb-4">
+            Multi-Attribute Decision Making (MADM)
+          </p>
           <div className="h-1 w-32 bg-indigo-600 rounded"></div>
         </div>
 
-        <InputKriteria 
+        {/* Input kriteria */}
+        <InputKriteria
           criteria={criteria}
           setCriteria={setCriteria}
           alternatives={alternatives}
           setAlternatives={setAlternatives}
         />
 
-        <InputAlternatif 
+        {/* Input alternatif */}
+        <InputAlternatif
           alternatives={alternatives}
           setAlternatives={setAlternatives}
           criteria={criteria}
         />
 
-        <PilihMetode 
+        {/* Pilih metode + tombol hitung */}
+        <PilihMetode
           selectedMethod={selectedMethod}
           setSelectedMethod={setSelectedMethod}
           onCalculate={handleCalculate}
         />
 
-        <TabelHasil 
-          results={results}
-          methodName={selectedMethod}
-        />
+        {/* Hasil */}
+        <TabelHasil results={results} methodName={selectedMethod} />
       </div>
     </div>
   );
