@@ -1,34 +1,52 @@
 import React from 'react';
-import { Calculator } from 'lucide-react';
 
 interface PilihMetodeProps {
   selectedMethod: string;
   setSelectedMethod: React.Dispatch<React.SetStateAction<string>>;
   onCalculate: () => void;
+  darkMode: boolean;
 }
 
-export default function PilihMetode({ selectedMethod, setSelectedMethod, onCalculate }: PilihMetodeProps) {
+export default function PilihMetode({ selectedMethod, setSelectedMethod, darkMode }: PilihMetodeProps) {
+  const methodDescriptions: { [key: string]: string } = {
+    SAW: 'Metode sederhana dengan normalisasi nilai dan pembobotan langsung',
+    WP: 'Menggunakan perkalian untuk menghubungkan rating atribut',
+    AHP: 'Menggunakan perbandingan berpasangan untuk menentukan prioritas (bobot otomatis)',
+    TOPSIS: 'Memilih alternatif terbaik berdasarkan jarak dari solusi ideal',
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Pilih Metode & Hitung</h2>
-      <div className="flex flex-col sm:flex-row gap-4">
+    <div className={`rounded-2xl shadow-xl p-6 mb-6 transition-colors duration-300 ${
+      darkMode 
+        ? 'bg-slate-800 border border-slate-700' 
+        : 'bg-white'
+    }`}>
+      <h2 className={`text-2xl font-bold mb-2 ${
+        darkMode ? 'text-white' : 'text-gray-800'
+      }`}>
+        Pilih Metode Decision Making
+      </h2>
+      <p className={`text-sm mb-4 ${
+        darkMode ? 'text-gray-400' : 'text-gray-600'
+      }`}>
+        Pilih metode yang akan digunakan untuk perhitungan
+      </p>
+      
+      <div className="flex flex-col gap-4">
         <select
           value={selectedMethod}
           onChange={(e) => setSelectedMethod(e.target.value)}
-          className="flex-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg"
+          className={`w-full px-4 py-3 rounded-xl border-2 focus:ring-2 focus:ring-purple-500 text-lg font-medium transition-colors duration-300 ${
+            darkMode 
+              ? 'bg-slate-700 border-slate-600 text-white focus:border-purple-500' 
+              : 'bg-white border-purple-200 text-gray-900 focus:border-purple-500'
+          }`}
         >
-          <option value="SAW">Simple Additive Weighting (SAW)</option>
-          <option value="WP">Weighted Product (WP)</option>
-          <option value="AHP">Analytical Hierarchy Process (AHP)</option>
-          <option value="TOPSIS">TOPSIS</option>
+          <option value="SAW">SAW - Simple Additive Weighting</option>
+          <option value="WP">WP - Weighted Product</option>
+          <option value="AHP">AHP - Analytical Hierarchy Process</option>
+          <option value="TOPSIS">TOPSIS - Technique for Order Preference by Similarity</option>
         </select>
-        <button
-          onClick={onCalculate}
-          className="flex items-center justify-center gap-2 bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition font-semibold text-lg"
-        >
-          <Calculator size={24} />
-          Hitung
-        </button>
       </div>
     </div>
   );

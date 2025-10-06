@@ -1,31 +1,14 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Navbar from "./components/navbar";
 import InputKriteria from "./components/InputKriteria";
 import InputAlternatif from "./components/InputAlternatif";
 import PilihMetode from "./components/PilihMetode";
 import TabelHasil from "./components/TabelHasil";
-
-interface Criterion {
-  id: number;
-  name: string;
-  weight: number;
-  type: "benefit" | "cost";
-}
-
-interface Alternative {
-  id: number;
-  name: string;
-  values: { [key: number]: number };
-}
-
-interface Result {
-  id: number;
-  name: string;
-  score: number;
-}
+import type { Criterion, Alternative, Result } from "./types";
 
 export default function HomePage() {
+  const [darkMode, setDarkMode] = useState(false);
   const [criteria, setCriteria] = useState<Criterion[]>([
     { id: 1, name: "Harga", weight: 0.3, type: "cost" },
   ]);
@@ -37,12 +20,31 @@ export default function HomePage() {
   const [selectedMethod, setSelectedMethod] = useState<string>("SAW");
   const [results, setResults] = useState<Result[] | null>(null);
 
+  // Load dark mode preference from localStorage
+  useEffect(() => {
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode) {
+      setDarkMode(JSON.parse(savedMode));
+    }
+  }, []);
+
+  // Save dark mode preference to localStorage
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   const handleCalculate = async () => {
-    // Validasi bobot kriteria
-    const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
-    if (Math.abs(totalWeight - 1) > 0.01) {
-      alert("Total bobot kriteria harus sama dengan 1.0!");
-      return;
+    if (selectedMethod !== "AHP") {
+      const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
+      if (Math.abs(totalWeight - 1) > 0.01) {
+        alert("Total bobot kriteria harus sama dengan 1.0!");
+        return;
+      }
     }
 
     try {
@@ -69,18 +71,32 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
-          <h1 className="text-4xl font-bold text-indigo-900 mb-2">
-            Decision Support System
-          </h1>
-          <p className="text-gray-600 mb-4">
-            Multi-Attribute Decision Making (MADM)
-          </p>
-          <div className="h-1 w-32 bg-indigo-600 rounded"></div>
+    <div className={`min-h-screen transition-colors duration-300 ${
+      darkMode 
+        ? 'bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900' 
+        : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'
+    }`}>
+      {/* Navbar */}
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-4 md:p-6">
+        {/* Page Header */}
+        <div className="mb-8 mt-4">
+          <h2 className={`text-2xl md:text-3xl font-bold mb-2 ${
+            darkMode ? 'text-white' : 'text-gray-900'
+          }`}>
+            Multi-Attribute Decision Making
+          </h2>
         </div>
+
+        {/* Pilih metode */}
+        <PilihMetode
+          selectedMethod={selectedMethod}
+          setSelectedMethod={setSelectedMethod}
+          onCalculate={handleCalculate}
+          darkMode={darkMode}
+        />
 
         {/* Input kriteria */}
         <InputKriteria
@@ -88,6 +104,8 @@ export default function HomePage() {
           setCriteria={setCriteria}
           alternatives={alternatives}
           setAlternatives={setAlternatives}
+          selectedMethod={selectedMethod}
+          darkMode={darkMode}
         />
 
         {/* Input alternatif */}
@@ -95,17 +113,40 @@ export default function HomePage() {
           alternatives={alternatives}
           setAlternatives={setAlternatives}
           criteria={criteria}
+          darkMode={darkMode}
         />
 
-        {/* Pilih metode + tombol hitung */}
-        <PilihMetode
-          selectedMethod={selectedMethod}
-          setSelectedMethod={setSelectedMethod}
-          onCalculate={handleCalculate}
-        />
+        {/* Tombol Hitung */}
+        <div className={`rounded-2xl shadow-xl p-6 mb-6 transition-colors duration-300 ${
+          darkMode 
+            ? 'bg-slate-800 border border-slate-700' 
+            : 'bg-white'
+        }`}>
+          <button
+            onClick={handleCalculate}
+            className={`w-full flex items-center justify-center gap-3 px-8 py-4 rounded-xl transition-all duration-300 font-bold text-lg md:text-xl border-2 ${
+              darkMode 
+                ? 'border-slate-600 hover:border-slate-500 text-gray-200 hover:bg-slate-700/50' 
+                : 'border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="2"/>
+              <line x1="8" y1="6" x2="16" y2="6"/>
+              <line x1="16" y1="14" x2="16" y2="18"/>
+              <path d="M16 10h.01"/>
+              <path d="M12 10h.01"/>
+              <path d="M8 10h.01"/>
+              <path d="M12 14h.01"/>
+              <path d="M8 14h.01"/>
+              <path d="M8 18h.01"/>
+            </svg>
+            Hitung Hasil
+          </button>
+        </div>
 
         {/* Hasil */}
-        <TabelHasil results={results} methodName={selectedMethod} />
+        <TabelHasil results={results} methodName={selectedMethod} darkMode={darkMode} />
       </div>
     </div>
   );
