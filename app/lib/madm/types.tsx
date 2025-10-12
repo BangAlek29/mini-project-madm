@@ -16,3 +16,18 @@ export interface Result {
   name: string;
   score: number;
 }
+
+export interface CalculationStep {
+  title: string;
+  description: string;
+  data?: any;
+  matrix?: number[][];
+  vector?: number[];
+  headers?: string[];
+  formulas?: string[];
+}
+
+export interface CalculationResult {
+  results: Result[];
+  steps: CalculationStep[];
+}

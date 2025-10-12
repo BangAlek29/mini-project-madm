@@ -3,7 +3,7 @@ import { calculateSAW } from "../../lib/madm/saw";
 import { calculateWP } from "../../lib/madm/wp";
 import { calculateAHP } from "../../lib/madm/ahp";
 import { calculateTOPSIS } from "../../lib/madm/topsis";
-import { Criterion, Alternative } from "../../lib/madm/types";
+import { Criterion, Alternative, CalculationResult } from "../../lib/madm/types";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     alternatives: Alternative[];
   };
 
-  const methods: Record<string, Function> = {
+  const methods: Record<string, (alts: Alternative[], crits: Criterion[]) => CalculationResult> = {
     SAW: calculateSAW,
     WP: calculateWP,
     AHP: calculateAHP,
@@ -24,6 +24,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Metode ${method} tidak tersedia` }, { status: 400 });
   }
 
-  const result = methods[method](alternatives, criteria);
-  return NextResponse.json({ method, result });
+  const { results, steps } = methods[method](alternatives, criteria);
+  return NextResponse.json({ method, result: results, steps });
 }

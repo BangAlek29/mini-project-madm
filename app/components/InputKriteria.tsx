@@ -130,7 +130,7 @@ export default function InputKriteria({ criteria, setCriteria, alternatives, set
                   <select
                     value={crit.type}
                     onChange={(e) => updateCriterion(crit.id, 'type', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors duration-300 ${
+                    className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors duration-300 ${
                       darkMode 
                         ? 'bg-slate-900 border-slate-600 text-white' 
                         : 'bg-white border-gray-300 text-gray-900'

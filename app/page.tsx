@@ -6,6 +6,7 @@ import InputAlternatif from "./components/InputAlternatif";
 import PilihMetode from "./components/PilihMetode";
 import TabelHasil from "./components/TabelHasil";
 import type { Criterion, Alternative, Result } from "./types";
+import type { CalculationStep } from "./lib/madm/types";
 
 export default function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
@@ -19,6 +20,7 @@ export default function HomePage() {
 
   const [selectedMethod, setSelectedMethod] = useState<string>("SAW");
   const [results, setResults] = useState<Result[] | null>(null);
+  const [steps, setSteps] = useState<CalculationStep[]>([]);
 
   // Load dark mode preference from localStorage
   useEffect(() => {
@@ -63,6 +65,7 @@ export default function HomePage() {
         alert(data.error);
       } else {
         setResults(data.result);
+        setSteps(data.steps || []);
       }
     } catch (err) {
       console.error(err);
@@ -74,7 +77,7 @@ export default function HomePage() {
     <div className={`min-h-screen transition-colors duration-300 ${
       darkMode 
         ? 'bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900' 
-        : 'bg-gradient-to-br from-yellow-50 via-yellow-100 to-red-50'
+        : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'
     }`}>
       {/* Navbar */}
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
@@ -96,6 +99,8 @@ export default function HomePage() {
           setSelectedMethod={setSelectedMethod}
           onCalculate={handleCalculate}
           darkMode={darkMode}
+          setCriteria={setCriteria}
+          setAlternatives={setAlternatives}
         />
 
         {/* Input kriteria */}
@@ -146,7 +151,13 @@ export default function HomePage() {
         </div>
 
         {/* Hasil */}
-        <TabelHasil results={results} methodName={selectedMethod} darkMode={darkMode} />
+        <TabelHasil 
+          results={results} 
+          methodName={selectedMethod} 
+          darkMode={darkMode}
+          steps={steps}
+          alternatives={alternatives}
+        />
       </div>
     </div>
   );
