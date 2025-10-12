@@ -50,39 +50,59 @@ export default function PilihMetode({ selectedMethod, setSelectedMethod, darkMod
     },
     AHP: {
       criteria: [
-        { id: 1, name: 'Lokasi', weight: 0.4, type: 'benefit' },
-        { id: 2, name: 'Harga', weight: 0.3, type: 'benefit' },
-        { id: 3, name: 'Fasilitas', weight: 0.3, type: 'benefit' },
+        { id: 1, name: 'C1', weight: 0.25, type: 'benefit' }, // Bobot dari perbandingan kriteria
+        { id: 2, name: 'C2', weight: 0.20, type: 'benefit' },
+        { id: 3, name: 'C3', weight: 0.17, type: 'benefit' },
+        { id: 4, name: 'C4', weight: 0.24, type: 'benefit' },
+        { id: 5, name: 'C5', weight: 0.14, type: 'benefit' },
       ],
       alternatives: [
         { 
           id: 1, 
-          name: 'Rumah A', 
+          name: 'A01', 
           values: { 
-            // Perbandingan berpasangan untuk Lokasi (kriteria 1)
-            '1_2': 3, '1_3': 5, '1_1': 1,
-            // Perbandingan berpasangan untuk Harga (kriteria 2)
-            '2_2': 1, '2_3': 7, '2_1': 1,
-            // Perbandingan berpasangan untuk Fasilitas (kriteria 3)
-            '3_2': 2, '3_3': 4, '3_1': 1
+            // Kriteria C1 - A01 vs others
+            '1_1': 1, '1_2': 3, '1_3': 3,
+            // Kriteria C2 - A01 vs others
+            '2_1': 1, '2_2': 2, '2_3': 4,
+            // Kriteria C3 - A01 vs others
+            '3_1': 1, '3_2': 2, '3_3': 1,
+            // Kriteria C4 - A01 vs others
+            '4_1': 1, '4_2': 2, '4_3': 3,
+            // Kriteria C5 - A01 vs others
+            '5_1': 1, '5_2': 4, '5_3': 3,
           } 
         },
         { 
           id: 2, 
-          name: 'Rumah B', 
+          name: 'A02', 
           values: { 
-            '1_1': 0.333, '1_3': 2, '1_2': 1,
-            '2_1': 1, '2_3': 5, '2_2': 1,
-            '3_1': 0.5, '3_3': 3, '3_2': 1
+            // Kriteria C1 - A02 vs others
+            '1_1': 0.333, '1_2': 1, '1_3': 2,
+            // Kriteria C2 - A02 vs others
+            '2_1': 0.5, '2_2': 1, '2_3': 3,
+            // Kriteria C3 - A02 vs others
+            '3_1': 0.5, '3_2': 1, '3_3': 2,
+            // Kriteria C4 - A02 vs others
+            '4_1': 0.5, '4_2': 1, '4_3': 6,
+            // Kriteria C5 - A02 vs others
+            '5_1': 0.25, '5_2': 1, '5_3': 2,
           } 
         },
         { 
           id: 3, 
-          name: 'Rumah C', 
+          name: 'A03', 
           values: { 
-            '1_1': 0.2, '1_2': 0.5, '1_3': 1,
-            '2_1': 0.143, '2_2': 0.2, '2_3': 1,
-            '3_1': 0.25, '3_2': 0.333, '3_3': 1
+            // Kriteria C1 - A03 vs others
+            '1_1': 0.333, '1_2': 0.5, '1_3': 1,
+            // Kriteria C2 - A03 vs others
+            '2_1': 0.25, '2_2': 0.333, '2_3': 1,
+            // Kriteria C3 - A03 vs others
+            '3_1': 1, '3_2': 0.5, '3_3': 1,
+            // Kriteria C4 - A03 vs others
+            '4_1': 0.333, '4_2': 0.167, '4_3': 1,
+            // Kriteria C5 - A03 vs others
+            '5_1': 0.333, '5_2': 0.5, '5_3': 1,
           } 
         },
       ]
