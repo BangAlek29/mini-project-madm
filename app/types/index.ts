@@ -10,7 +10,7 @@ export interface Criterion {
 export interface Alternative {
   id: number;
   name: string;
-  values: { [key: number]: number };
+  values: { [key: number | string]: number };
 }
 
 export interface Result {

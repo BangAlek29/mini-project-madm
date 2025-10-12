@@ -5,6 +5,7 @@ import InputKriteria from "./components/InputKriteria";
 import InputAlternatif from "./components/InputAlternatif";
 import PilihMetode from "./components/PilihMetode";
 import TabelHasil from "./components/TabelHasil";
+import AHPPairwiseComparison from "./components/AHPPairwiseComparison";
 import type { Criterion, Alternative, Result } from "./types";
 import type { CalculationStep } from "./lib/madm/types";
 
@@ -119,7 +120,18 @@ export default function HomePage() {
           setAlternatives={setAlternatives}
           criteria={criteria}
           darkMode={darkMode}
+          selectedMethod={selectedMethod}
         />
+
+        {/* AHP Pairwise Comparison - hanya tampil jika metode AHP */}
+        {selectedMethod === 'AHP' && (
+          <AHPPairwiseComparison
+            criteria={criteria}
+            alternatives={alternatives}
+            setAlternatives={setAlternatives}
+            darkMode={darkMode}
+          />
+        )}
 
         {/* Tombol Hitung */}
         <div className={`rounded-2xl shadow-xl p-6 mb-6 transition-colors duration-300 ${

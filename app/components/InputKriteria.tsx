@@ -83,9 +83,9 @@ export default function InputKriteria({ criteria, setCriteria, alternatives, set
               {!isAHP && <th className={`px-4 py-3 text-left text-sm font-semibold ${
                 darkMode ? 'text-gray-200' : 'text-gray-700'
               }`}>Bobot</th>}
-              <th className={`px-4 py-3 text-left text-sm font-semibold ${
+              {!isAHP && <th className={`px-4 py-3 text-left text-sm font-semibold ${
                 darkMode ? 'text-gray-200' : 'text-gray-700'
-              }`}>Tipe</th>
+              }`}>Tipe</th>}
               <th className={`px-4 py-3 text-left text-sm font-semibold ${
                 darkMode ? 'text-gray-200' : 'text-gray-700'
               }`}>Aksi</th>
@@ -126,20 +126,22 @@ export default function InputKriteria({ criteria, setCriteria, alternatives, set
                     />
                   </td>
                 )}
-                <td className="px-4 py-3">
-                  <select
-                    value={crit.type}
-                    onChange={(e) => updateCriterion(crit.id, 'type', e.target.value)}
-                    className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors duration-300 ${
-                      darkMode 
-                        ? 'bg-slate-900 border-slate-600 text-white' 
-                        : 'bg-white border-gray-300 text-gray-900'
-                    }`}
-                  >
-                    <option value="benefit">Benefit</option>
-                    <option value="cost">Cost</option>
-                  </select>
-                </td>
+                {!isAHP && (
+                  <td className="px-4 py-3">
+                    <select
+                      value={crit.type}
+                      onChange={(e) => updateCriterion(crit.id, 'type', e.target.value)}
+                      className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors duration-300 ${
+                        darkMode 
+                          ? 'bg-slate-900 border-slate-600 text-white' 
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                    >
+                      <option value="benefit">Benefit</option>
+                      <option value="cost">Cost</option>
+                    </select>
+                  </td>
+                )}
                 <td className="px-4 py-3">
                   <button
                     onClick={() => removeCriterion(crit.id)}

@@ -7,9 +7,11 @@ interface InputAlternatifProps {
   setAlternatives: React.Dispatch<React.SetStateAction<Alternative[]>>;
   criteria: Criterion[];
   darkMode: boolean;
+  selectedMethod?: string;
 }
 
-export default function InputAlternatif({ alternatives, setAlternatives, criteria, darkMode }: InputAlternatifProps) {
+export default function InputAlternatif({ alternatives, setAlternatives, criteria, darkMode, selectedMethod }: InputAlternatifProps) {
+  const isAHP = selectedMethod === 'AHP';
   const addAlternative = () => {
     const newId = Math.max(...alternatives.map((a: Alternative) => a.id), 0) + 1;
     const values: { [key: number]: number } = {};
@@ -44,11 +46,20 @@ export default function InputAlternatif({ alternatives, setAlternatives, criteri
         : 'bg-white'
     }`}>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
-        <h2 className={`text-2xl font-bold ${
-          darkMode ? 'text-white' : 'text-gray-800'
-        }`}>
-          Alternatif
-        </h2>
+        <div>
+          <h2 className={`text-2xl font-bold ${
+            darkMode ? 'text-white' : 'text-gray-800'
+          }`}>
+            Alternatif
+          </h2>
+          {isAHP && (
+            <p className={`text-sm mt-1 ${
+              darkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Untuk metode AHP, nilai akan diinput melalui perbandingan berpasangan
+            </p>
+          )}
+        </div>
         <button
           onClick={addAlternative}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 font-medium border-2 ${
@@ -71,7 +82,7 @@ export default function InputAlternatif({ alternatives, setAlternatives, criteri
               <th className={`px-4 py-3 text-left text-sm font-semibold ${
                 darkMode ? 'text-gray-200' : 'text-gray-700'
               }`}>Nama Alternatif</th>
-              {criteria.map((crit: Criterion) => (
+              {!isAHP && criteria.map((crit: Criterion) => (
                 <th key={crit.id} className={`px-4 py-3 text-left text-sm font-semibold ${
                   darkMode ? 'text-gray-200' : 'text-gray-700'
                 }`}>
@@ -102,7 +113,7 @@ export default function InputAlternatif({ alternatives, setAlternatives, criteri
                     }`}
                   />
                 </td>
-                {criteria.map((crit: Criterion) => (
+                {!isAHP && criteria.map((crit: Criterion) => (
                   <td key={crit.id} className="px-4 py-3">
                     <input
                       type="number"

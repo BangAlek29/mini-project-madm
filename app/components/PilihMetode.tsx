@@ -50,16 +50,41 @@ export default function PilihMetode({ selectedMethod, setSelectedMethod, darkMod
     },
     AHP: {
       criteria: [
-        { id: 1, name: 'Lokasi', weight: 0, type: 'benefit' },
-        { id: 2, name: 'Harga Sewa', weight: 0, type: 'cost' },
-        { id: 3, name: 'Fasilitas', weight: 0, type: 'benefit' },
-        { id: 4, name: 'Keamanan', weight: 0, type: 'benefit' },
+        { id: 1, name: 'Lokasi', weight: 0.4, type: 'benefit' },
+        { id: 2, name: 'Harga', weight: 0.3, type: 'benefit' },
+        { id: 3, name: 'Fasilitas', weight: 0.3, type: 'benefit' },
       ],
       alternatives: [
-        { id: 1, name: 'Rumah A', values: { 1: 90, 2: 15000000, 3: 85, 4: 88 } },
-        { id: 2, name: 'Rumah B', values: { 1: 85, 2: 12000000, 3: 90, 4: 92 } },
-        { id: 3, name: 'Rumah C', values: { 1: 88, 2: 18000000, 3: 95, 4: 85 } },
-        { id: 4, name: 'Rumah D', values: { 1: 92, 2: 20000000, 3: 88, 4: 90 } },
+        { 
+          id: 1, 
+          name: 'Rumah A', 
+          values: { 
+            // Perbandingan berpasangan untuk Lokasi (kriteria 1)
+            '1_2': 3, '1_3': 5, '1_1': 1,
+            // Perbandingan berpasangan untuk Harga (kriteria 2)
+            '2_2': 1, '2_3': 7, '2_1': 1,
+            // Perbandingan berpasangan untuk Fasilitas (kriteria 3)
+            '3_2': 2, '3_3': 4, '3_1': 1
+          } 
+        },
+        { 
+          id: 2, 
+          name: 'Rumah B', 
+          values: { 
+            '1_1': 0.333, '1_3': 2, '1_2': 1,
+            '2_1': 1, '2_3': 5, '2_2': 1,
+            '3_1': 0.5, '3_3': 3, '3_2': 1
+          } 
+        },
+        { 
+          id: 3, 
+          name: 'Rumah C', 
+          values: { 
+            '1_1': 0.2, '1_2': 0.5, '1_3': 1,
+            '2_1': 0.143, '2_2': 0.2, '2_3': 1,
+            '3_1': 0.25, '3_2': 0.333, '3_3': 1
+          } 
+        },
       ]
     },
     TOPSIS: {
