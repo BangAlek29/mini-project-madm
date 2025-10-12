@@ -36,10 +36,10 @@ export default function PilihMetode({ selectedMethod, setSelectedMethod, darkMod
         <select
           value={selectedMethod}
           onChange={(e) => setSelectedMethod(e.target.value)}
-          className={`w-full px-4 py-3 rounded-xl border-2 focus:ring-2 focus:ring-purple-500 text-lg font-medium transition-colors duration-300 ${
+          className={`w-full px-4 py-3 rounded-xl border-2 focus:ring-2 focus:ring-yellow-500 text-lg font-medium transition-colors duration-300 ${
             darkMode 
-              ? 'bg-slate-700 border-slate-600 text-white focus:border-purple-500' 
-              : 'bg-white border-purple-200 text-gray-900 focus:border-purple-500'
+              ? 'bg-slate-700 border-slate-600 text-white focus:border-yellow-500' 
+              : 'bg-white border-yellow-200 text-gray-900 focus:border-yellow-500'
           }`}
         >
           <option value="SAW">SAW - Simple Additive Weighting</option>

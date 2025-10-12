@@ -57,7 +57,7 @@ export default function InputAlternatif({ alternatives, setAlternatives, criteri
               : 'border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50'
           }`}
         >
-          <Plus size={20} />
+          <Plus size={15} />
           Tambah Alternatif
         </button>
       </div>
@@ -95,7 +95,7 @@ export default function InputAlternatif({ alternatives, setAlternatives, criteri
                     type="text"
                     value={alt.name}
                     onChange={(e) => updateAlternative(alt.id, 'name', e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-300 ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors duration-300 ${
                       darkMode 
                         ? 'bg-slate-900 border-slate-600 text-white' 
                         : 'bg-white border-gray-300 text-gray-900'
@@ -110,7 +110,7 @@ export default function InputAlternatif({ alternatives, setAlternatives, criteri
                       value={alt.values[crit.id] || ''}
                       onChange={(e) => updateAlternativeValue(alt.id, crit.id, e.target.value)}
                       placeholder="0"
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-300 ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors duration-300 ${
                         darkMode 
                           ? 'bg-slate-900 border-slate-600 text-white placeholder-gray-500' 
                           : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'

@@ -74,7 +74,7 @@ export default function HomePage() {
     <div className={`min-h-screen transition-colors duration-300 ${
       darkMode 
         ? 'bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900' 
-        : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'
+        : 'bg-gradient-to-br from-yellow-50 via-yellow-100 to-red-50'
     }`}>
       {/* Navbar */}
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
@@ -127,7 +127,7 @@ export default function HomePage() {
             className={`w-full flex items-center justify-center gap-3 px-8 py-4 rounded-xl transition-all duration-300 font-bold text-lg md:text-xl border-2 ${
               darkMode 
                 ? 'border-slate-600 hover:border-slate-500 text-gray-200 hover:bg-slate-700/50' 
-                : 'border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50'
+                : 'border-yellow-300 hover:border-yellow-400 text-black-600 hover:bg-yellow-50'
             }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

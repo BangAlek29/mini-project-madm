@@ -19,8 +19,8 @@ export default function Navbar({ darkMode, setDarkMode }: NavbarProps) {
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
               darkMode 
-                ? 'bg-gradient-to-br from-blue-500 to-purple-500' 
-                : 'bg-gradient-to-br from-indigo-600 to-purple-600'
+                ? 'bg-gradient-to-br from-yellow-600 to-red-600' 
+                : 'bg-gradient-to-br from-yellow-500 to-red-500'
             }`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 3v18h18"/>
@@ -49,7 +49,7 @@ export default function Navbar({ darkMode, setDarkMode }: NavbarProps) {
               className={`p-2 md:p-3 rounded-lg transition-all duration-300 ${
                 darkMode 
                   ? 'bg-slate-800 hover:bg-slate-700 text-yellow-400' 
-                  : 'bg-gray-100 hover:bg-gray-200 text-indigo-600'
+                  : 'bg-yellow-50 hover:bg-yellow-100 text-red-600'
               }`}
               aria-label="Toggle dark mode"
             >

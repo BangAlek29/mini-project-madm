@@ -39,8 +39,8 @@ export default function TabelHasil({ results, methodName, darkMode }: TabelHasil
             <thead>
               <tr className={`${
                 darkMode 
-                  ? 'bg-gradient-to-r from-purple-900/50 to-indigo-900/50' 
-                  : 'bg-gradient-to-r from-purple-100 to-indigo-100'
+                  ? 'bg-gradient-to-r from-yellow-900/30 to-red-900/30' 
+                  : 'bg-gradient-to-r from-yellow-100 to-red-100'
               }`}>
                 <th className={`px-4 py-3 text-left text-sm font-semibold ${
                   darkMode ? 'text-gray-200' : 'text-gray-700'
@@ -67,7 +67,7 @@ export default function TabelHasil({ results, methodName, darkMode }: TabelHasil
                     <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
                       index === 0 ? 'bg-yellow-400 text-yellow-900 font-bold' :
                       index === 1 ? (darkMode ? 'bg-gray-600 text-gray-200' : 'bg-gray-300 text-gray-700') :
-                      index === 2 ? 'bg-orange-400 text-orange-900' :
+                      index === 2 ? 'bg-red-400 text-red-900' :
                       (darkMode ? 'bg-slate-700 text-gray-300' : 'bg-gray-100 text-gray-600')
                     }`}>
                       {index + 1}
@@ -77,7 +77,7 @@ export default function TabelHasil({ results, methodName, darkMode }: TabelHasil
                     darkMode ? 'text-gray-200' : 'text-gray-900'
                   }`}>{alt.name}</td>
                   <td className={`px-4 py-3 font-semibold ${
-                    darkMode ? 'text-indigo-400' : 'text-indigo-600'
+                    darkMode ? 'text-yellow-400' : 'text-red-600'
                   }`}>
                     {alt.score.toFixed(6)}
                   </td>
