@@ -14,8 +14,30 @@ interface TabelHasilProps {
 export default function TabelHasil({ results, methodName, darkMode, steps, alternatives }: TabelHasilProps) {
   const [showResults, setShowResults] = useState(true);
   const [showSteps, setShowSteps] = useState(true);
+  const [ahpTab, setAhpTab] = useState<'criteria' | 'alternatives'>('criteria');
 
   if (!results) return null;
+
+  // Pisahkan steps untuk AHP berdasarkan bagian
+  const isAHP = methodName === 'AHP';
+  let criteriaSteps: CalculationStep[] = [];
+  let alternativeSteps: CalculationStep[] = [];
+  
+  if (isAHP && steps) {
+    steps.forEach((step) => {
+      // Skip separator lines
+      if (step.title.includes('═══')) {
+        return;
+      }
+      
+      // Deteksi berdasarkan title yang dimulai dengan Step A atau Step B
+      if (step.title.startsWith('Step A')) {
+        criteriaSteps.push(step);
+      } else if (step.title.startsWith('Step B')) {
+        alternativeSteps.push(step);
+      }
+    });
+  }
 
   // Helper function to render matrix
   const renderMatrix = (matrix: number[][], headers?: string[]) => (
@@ -105,8 +127,51 @@ export default function TabelHasil({ results, methodName, darkMode, steps, alter
           </div>
           
           {showSteps && (
-            <div className="space-y-6">
-              {steps.map((step, idx) => (
+            <div>
+              {/* Tab Navigation untuk AHP */}
+              {isAHP && (
+                <div className="mb-6">
+                  <div className={`flex gap-3 p-1.5 rounded-xl ${
+                    darkMode ? 'bg-slate-900/50' : 'bg-gray-100'
+                  }`}>
+                    <button
+                      onClick={() => setAhpTab('criteria')}
+                      className={`flex-1 px-6 py-4 rounded-lg font-bold text-base transition-all duration-200 ${
+                        ahpTab === 'criteria'
+                          ? darkMode
+                            ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white shadow-xl scale-105'
+                            : 'bg-gradient-to-r from-yellow-400 to-red-400 text-white shadow-xl scale-105'
+                          : darkMode
+                            ? 'text-gray-400 hover:text-white hover:bg-slate-800'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-white'
+                      }`}
+                    >
+                      Perhitungan Kriteria (Bobot Prioritas)
+                    </button>
+                    <button
+                      onClick={() => setAhpTab('alternatives')}
+                      className={`flex-1 px-6 py-4 rounded-lg font-bold text-base transition-all duration-200 ${
+                        ahpTab === 'alternatives'
+                          ? darkMode
+                            ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white shadow-xl scale-105'
+                            : 'bg-gradient-to-r from-yellow-400 to-red-400 text-white shadow-xl scale-105'
+                          : darkMode
+                            ? 'text-gray-400 hover:text-white hover:bg-slate-800'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-white'
+                      }`}
+                    >
+                      Perhitungan Alternatif (Pemeringkatan)
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Steps Content */}
+              <div className="space-y-6">
+                {(isAHP 
+                  ? (ahpTab === 'criteria' ? criteriaSteps : alternativeSteps)
+                  : steps
+                ).map((step, idx) => (
                 <div 
                   key={idx} 
                   className={`p-4 rounded-xl border-2 ${
@@ -288,6 +353,7 @@ export default function TabelHasil({ results, methodName, darkMode, steps, alter
                   )}
                 </div>
               ))}
+              </div>
             </div>
           )}
         </div>
